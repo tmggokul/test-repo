@@ -1,0 +1,51 @@
+public class CreditCardApplicationTest {
+    
+    private WebDriver driver;
+    
+    @BeforeClass
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", ""D:/New folder"/chromedriver");
+        driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+    }
+    
+    @Test
+    public void testCreditCardApplicationProcess() {
+        // Step 1: Open FR Homepage
+        driver.get("https://www.americanexpress.com/fr-fr/?inav=NavLogo");
+        
+        // Step 2: Click on "Cartes American Express"
+        WebElement cartesLink = driver.findElement(By.linkText("Cartes American Express"));
+        cartesLink.click();
+        
+        // Step 3: Click on "En Savoir Plus" under "Cartes Gold American Express"
+        WebElement goldCardButton = driver.findElement(By.xpath("//a[contains(text(),'En Savoir Plus')]");
+        goldCardButton.click();
+        
+        // Step 4: Click on "Demandez Votre Carte"
+        WebElement demandezButton = driver.findElement(By.xpath("//a[contains(text(),'Demandez Votre Carte')]");
+        demandezButton.click();
+        
+        // Step 5: Fill Junk Data in the User Details Form
+        WebElement firstName = driver.findElement(By.id("firstName"));
+        firstName.sendKeys("TestFirst");
+        WebElement lastName = driver.findElement(By.id("lastName"));
+        lastName.sendKeys("TestLast");
+        WebElement email = driver.findElement(By.id("email"));
+        email.sendKeys("invalidemail");
+        WebElement continueButton = driver.findElement(By.id("submit"));
+        continueButton.click();
+        
+        // Step 6: Validate error messages
+        WebElement errorMessage = driver.findElement(By.className("error-message"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "Error message not displayed for invalid input");
+    }
+    
+    @AfterClass
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
